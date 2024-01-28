@@ -42,10 +42,10 @@ router.get("/", (req, res) => {
 // POST /gallery
 router.post("/", (req, res) => {
   // Create queryText and queryArgs
-  console.log(Object.values(req.body[0]));
+  console.log(req.body);
   const queryText = `INSERT INTO "gallery" (url, title, description)
     VALUES ($1, $2, $3);`;
-  const queryArgs = Object.values(req.body[0]);
+  const queryArgs = [req.body.url, req.body.title, req.body.description];
 
   // conduct query
   pool
