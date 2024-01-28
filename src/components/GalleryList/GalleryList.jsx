@@ -32,16 +32,10 @@ export default function GalleryList() {
           <GalleryItem
             key={galleryListItem.id}
             galleryData={galleryListItem}
-            refreshGallaeryCallback={refreshGallery}
+            refreshGalleryCallback={refreshGallery}
           />
         );
       })}
-      {/* <img src="images/goat_small.jpg" />
-      <img
-        src="images/DwarfRanger.jpg"
-        width="100px"
-        height="100px"
-      /> */}
     </div>
   );
 }

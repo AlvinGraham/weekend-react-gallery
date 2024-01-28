@@ -1,9 +1,21 @@
 import { useState } from "react";
 import "./GalleryItem.css";
+import { putGalleryLike } from "../../galleryApi/gallery.api";
 
-export default function GalleryItem({ galleryData, galleryRefreshCallback }) {
+export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
   // initialize state variables
   const [showImage, setShowImage] = useState(true);
+
+  // Component Functions
+  const likeBtnClkHandler = (id) => {
+    putGalleryLike(id)
+      .then((response) => {
+        refreshGalleryCallback();
+      })
+      .catch((err) => {
+        console.error("ERROR in client PUT Route:", err);
+      });
+  };
 
   return (
     <div
@@ -16,7 +28,14 @@ export default function GalleryItem({ galleryData, galleryRefreshCallback }) {
         height="150px"
       />
 
-      <button>Click to Like!</button>
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          likeBtnClkHandler(galleryData.id);
+        }}
+        data-testid="like">
+        Click to Like!
+      </button>
       <p>{galleryData.likes} people like this</p>
     </div>
   );
