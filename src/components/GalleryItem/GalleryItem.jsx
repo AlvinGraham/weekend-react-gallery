@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./GalleryItem.css";
 import { putGalleryLike } from "../../galleryApi/gallery.api";
 
@@ -17,17 +17,35 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
       });
   };
 
+  const imageToggleHandler = () => {
+    // useEffect(() => {
+    //   setShowImage(!showImage);
+    // }, [showImage, setShowImage]);
+    const newImageState = !showImage;
+    setShowImage(!showImage);
+
+    console.log("showImage:", newImageState);
+  };
+
   return (
     <div
       data-testid="galleryItem"
       className="gallery-card">
       <p>{galleryData.title}</p>
-      <img
-        src={galleryData.url}
-        width="150px"
-        height="150px"
-      />
-
+      {showImage ? (
+        <img
+          src={galleryData.url}
+          width="150px"
+          height="150px"
+          onClick={imageToggleHandler}
+        />
+      ) : (
+        <p
+          onClick={imageToggleHandler}
+          data-testid="description">
+          {galleryData.description}
+        </p>
+      )}
       <button
         onClick={(event) => {
           event.preventDefault();
