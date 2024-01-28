@@ -1,3 +1,5 @@
+import GalleryList from "../GalleryList/GalleryList";
+
 function App() {
   return (
     <div data-testid="app">
@@ -5,13 +7,7 @@ function App() {
         <h1>React Gallery</h1>
       </header>
 
-      <p>The gallery goes here!</p>
-      <img src="images/goat_small.jpg" />
-      <img
-        src="images/DwarfRanger.jpg"
-        width="100px"
-        height="100px"
-      />
+      <GalleryList />
     </div>
   );
 }

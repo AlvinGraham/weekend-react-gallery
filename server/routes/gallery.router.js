@@ -8,8 +8,6 @@ router.put("/like/:id", (req, res) => {
   const queryText = `UPDATE "gallery" SET likes = likes + 1 WHERE id = $1;`;
   const queryArgs = [req.params.id];
 
-  console.log(`DB Query: ${queryText}\nArgs: ${queryArgs}`);
-
   // conduct query
   pool
     .query(queryText, queryArgs)
