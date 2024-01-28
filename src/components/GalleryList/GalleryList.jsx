@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getGallery } from "../../galleryApi/gallery.api";
+import GalleryItem from "../GalleryItem/GalleryItem";
 
 export default function GalleryList() {
   // declare state variables
@@ -26,6 +27,15 @@ export default function GalleryList() {
   return (
     <div data-testid="galleryList">
       <p>The gallery goes here!</p>
+      {galleryItems.map((galleryListItem) => {
+        return (
+          <GalleryItem
+            key={galleryListItem.id}
+            galleryData={galleryListItem}
+            refreshGallaeryCallback={refreshGallery}
+          />
+        );
+      })}
       {/* <img src="images/goat_small.jpg" />
       <img
         src="images/DwarfRanger.jpg"
