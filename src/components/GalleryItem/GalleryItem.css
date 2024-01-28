@@ -1,0 +1,14 @@
+.gallery-card {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 250px;
+  height: 250px;
+  border: 2px solid black;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.gallery-card p {
+  margin: 0px;
+}
