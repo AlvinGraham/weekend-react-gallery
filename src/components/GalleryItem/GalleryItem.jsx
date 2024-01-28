@@ -32,20 +32,19 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
       data-testid="galleryItem"
       className="gallery-card">
       <p>{galleryData.title}</p>
-      {showImage ? (
-        <img
-          src={galleryData.url}
-          width="150px"
-          height="150px"
-          onClick={imageToggleHandler}
-        />
-      ) : (
-        <p
-          onClick={imageToggleHandler}
-          data-testid="description">
-          {galleryData.description}
-        </p>
-      )}
+      <div
+        onClick={imageToggleHandler}
+        data-testid="toggle">
+        {showImage ? (
+          <img
+            src={galleryData.url}
+            width="150px"
+            height="150px"
+          />
+        ) : (
+          <p>{galleryData.description}</p>
+        )}
+      </div>
       <button
         onClick={(event) => {
           event.preventDefault();
