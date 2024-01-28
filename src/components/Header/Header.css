@@ -1,0 +1,13 @@
+header {
+  background-color: purple;
+  color: gold;
+  height: 100px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  border-bottom: 2px solid gold;
+}
+
+header h1 {
+  text-align: center;
+}

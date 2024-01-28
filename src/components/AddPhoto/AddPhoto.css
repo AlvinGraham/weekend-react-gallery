@@ -1,0 +1,17 @@
+.add-form {
+  background-color: darkgreen;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.add-form.show-form {
+  background-color: lightseagreen;
+  border-bottom: 2px solid gold;
+}
+
+/* For Testing Only */
+.add-form h3 {
+  color: cyan;
+  text-align: center;
+}
