@@ -32,20 +32,15 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
       data-testid="galleryItem"
       className="gallery-card">
       <p>{galleryData.title}</p>
-      {showImage ? (
-        <img
-          src={galleryData.url}
-          width="150px"
-          height="150px"
-          onClick={imageToggleHandler}
-        />
-      ) : (
-        <p
-          onClick={imageToggleHandler}
-          data-testid="description">
-          {galleryData.description}
-        </p>
-      )}
+      <div
+        onClick={imageToggleHandler}
+        data-testid="toggle">
+        {showImage ? (
+          <img src={galleryData.url} />
+        ) : (
+          <p>{galleryData.description}</p>
+        )}
+      </div>
       <button
         onClick={(event) => {
           event.preventDefault();
@@ -54,7 +49,15 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
         data-testid="like">
         Click to Like!
       </button>
-      <p>{galleryData.likes} people like this</p>
+      <p>
+        {galleryData.likes}{" "}
+        {galleryData.likes === 0 || galleryData.likes > 1 ? (
+          <span>people</span>
+        ) : (
+          <span>person</span>
+        )}{" "}
+        {galleryData.likes === 1 ? <span>likes</span> : <span>like</span>} this
+      </p>
     </div>
   );
 }

@@ -7,3 +7,7 @@ export const getGallery = () => {
 export const putGalleryLike = (galleryItemID) => {
   return axios.put(`/api/gallery/like/${galleryItemID}`);
 };
+
+export const postPhoto = (photoItem) => {
+  return axios.post("/api/gallery", photoItem);
+};

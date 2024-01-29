@@ -1,38 +1,18 @@
-import { useState, useEffect } from "react";
-import { getGallery } from "../../galleryApi/gallery.api";
 import GalleryItem from "../GalleryItem/GalleryItem";
+import "./GalleryList.css";
 
-export default function GalleryList() {
-  // declare state variables
-  const [galleryItems, setGalleryItems] = useState([]);
-
-  // Component Functions
-  const refreshGallery = () => {
-    getGallery()
-      .then((response) => {
-        console.log("Retrieved data:");
-        console.table(response.data);
-        setGalleryItems(response.data);
-      })
-      .catch((err) => {
-        console.err("ERROR in client GET Route:", err);
-      });
-  }; // end refreshGallery
-
-  // initial data load
-  useEffect(() => {
-    refreshGallery();
-  }, []);
-
+export default function GalleryList({ galleryItems, refreshGalleryCallback }) {
   return (
-    <div data-testid="galleryList">
-      <p>The gallery goes here!</p>
+    <div
+      data-testid="galleryList"
+      className="gallery-div">
+      <h2>PHOTO GALLERY</h2>
       {galleryItems.map((galleryListItem) => {
         return (
           <GalleryItem
             key={galleryListItem.id}
             galleryData={galleryListItem}
-            refreshGalleryCallback={refreshGallery}
+            refreshGalleryCallback={refreshGalleryCallback}
           />
         );
       })}
