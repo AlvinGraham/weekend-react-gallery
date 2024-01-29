@@ -23,6 +23,8 @@
 }
 .showFormButton {
   margin-top: 10px;
+  cursor: pointer;
+  background-color: teal;
 }
 
 form {
@@ -43,6 +45,8 @@ form {
 .form-field button {
   padding: 5px;
   margin: 5px;
+  cursor: pointer;
+  background-color: teal;
 }
 
 .left {

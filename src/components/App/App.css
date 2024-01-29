@@ -1,3 +1,4 @@
 .app-div {
   background-color: darkgreen;
+  min-height: 100vh;
 }
