@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import "./GalleryItem.css";
 import { putGalleryLike, deletePhoto } from "../../galleryApi/gallery.api";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { red, grey } from "@mui/material/colors";
+import Button from "@mui/material/Button";
 
 export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
   // initialize state variables
@@ -42,14 +46,15 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
       data-testid="galleryItem"
       className="gallery-card">
       <p>{galleryData.title}</p>
-      <button
-        className="delBtn"
+      <DeleteForeverIcon
+        fontSize="small"
         onClick={(event) => {
           event.preventDefault();
           delBtnClkHandler(galleryData.id);
-        }}>
-        Delete
-      </button>
+        }}
+        className="delBtn"
+      />
+
       <div
         onClick={imageToggleHandler}
         data-testid="toggle">
@@ -59,15 +64,18 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
           <p className="descPara">{galleryData.description}</p>
         )}
       </div>
+
       <button
         onClick={(event) => {
           event.preventDefault();
           likeBtnClkHandler(galleryData.id);
         }}
+        className="likeBtn"
         data-testid="like">
-        Click to Like!
+        Click to Like!{" "}
+        <FavoriteIcon sx={{ fontSize: 10, color: red["A700"] }} />
       </button>
-      <p>
+      <p className="likePara">
         {galleryData.likes}{" "}
         {galleryData.likes === 0 || galleryData.likes > 1 ? (
           <span>people</span>
