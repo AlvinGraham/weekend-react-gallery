@@ -10,6 +10,60 @@
   border-bottom: 2px solid gold;
 }
 
+.add-form textarea {
+  width: 200px;
+  height: 70px;
+  resize: none;
+}
+
+.add-form h2 {
+  color: gold;
+  text-align: center;
+  margin: 0px;
+}
+.showFormButton {
+  margin-top: 10px;
+}
+
+form {
+  width: 100%;
+  padding: 10px;
+}
+
+.form-field {
+  display: flex;
+  flex-flow: row nowrap;
+  min-width: 400px;
+  padding: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+}
+
+.form-field button {
+  padding: 5px;
+  margin: 5px;
+}
+
+.left {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.left input {
+  margin-bottom: 5px;
+}
+
+.center {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.right {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 /* For Testing Only */
 .add-form h3 {
   color: cyan;

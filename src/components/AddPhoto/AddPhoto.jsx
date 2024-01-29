@@ -24,7 +24,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
     event.preventDefault();
     console.log("In submit handler");
 
-    // data validation
+    // data validation (implicit in hmtl code)
 
     //assemble data payload
     const photoData = {
@@ -47,47 +47,68 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       });
   }; // end formSubmitHandler()
 
+  const resetBtnClkHandler = (event) => {
+    event.preventDefault();
+    setTitleInputValue("");
+    setDescInputValue("");
+    setUrlInputValue("");
+  };
+
   return (
     <div className="add-form">
-      <button
-        id="showFormButton"
-        onClick={changeStateBtnClkHandler}>
-        Change State Button
-      </button>
-      {showForm ? <h3>Current State TRUE</h3> : <h3>Current State FALSE</h3>}
+      {showForm ? (
+        <button
+          className="showFormButton"
+          onClick={changeStateBtnClkHandler}>
+          Click Me to Hide Photo Form
+        </button>
+      ) : (
+        <button
+          className="showFormButton"
+          onClick={changeStateBtnClkHandler}>
+          Click Me to Add New Photo
+        </button>
+      )}
+      {/* {showForm ? <h3>Current State TRUE</h3> : <h3>Current State FALSE</h3>} */}
       {showForm && (
         <form onSubmit={formSubmitHandler}>
           <h2>Add a Photo</h2>
-          <label htmlFor="titleInput">
-            Photo Title:
-            <input
-              id="titleInput"
-              type="text"
-              onChange={(event) => setTitleInputValue(event.target.value)}
-              value={titleInputValue}
-              required
-            />
-          </label>
-          <label htmlFor="descInput">
-            Description:
-            <input
-              id="descInput"
-              type="text"
-              onChange={(event) => setDescInputValue(event.target.value)}
-              value={descInputValue}
-            />
-          </label>
-          <label htmlFor="urlInput">
-            Photo Location (URL only):
-            <input
-              id="urlInput"
-              type="url"
-              onChange={(event) => setUrlInputValue(event.target.value)}
-              value={urlInputValue}
-              required
-            />
-          </label>
-          <button type="submit">Submit Photo</button>
+          <div className="form-field">
+            <div className="left">
+              <label htmlFor="titleInput">Photo Title:</label>
+              <input
+                id="titleInput"
+                type="text"
+                onChange={(event) => setTitleInputValue(event.target.value)}
+                value={titleInputValue}
+                placeholder="Enter photo title here..."
+                required
+              />
+              <label htmlFor="urlInput">Photo Location (URL only):</label>
+              <input
+                id="urlInput"
+                type="url"
+                onChange={(event) => setUrlInputValue(event.target.value)}
+                value={urlInputValue}
+                placeholder="Enter Local or Web URL here..."
+                required
+              />
+            </div>
+            <div className="center">
+              <label htmlFor="descInput">Description:</label>
+              <textarea
+                id="descInput"
+                type="text"
+                onChange={(event) => setDescInputValue(event.target.value)}
+                placeholder="Enter photo description here..."
+                value={descInputValue}
+              />
+            </div>
+            <div className="right">
+              <button type="submit">Submit Photo</button>
+              <button onClick={resetBtnClkHandler}>Reset Form</button>
+            </div>
+          </div>
         </form>
       )}
     </div>
