@@ -8,6 +8,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
   const [titleInputValue, setTitleInputValue] = useState("");
   const [descInputValue, setDescInputValue] = useState("");
   const [urlInputValue, setUrlInputValue] = useState("");
+  const [fileInputValue, setFileInputValue] = useState("");
 
   // component functions
   const changeStateBtnClkHandler = (event) => {
@@ -31,6 +32,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       title: titleInputValue,
       description: descInputValue,
       url: urlInputValue,
+      file: fileInputValue,
     };
 
     //console.log("photoData:", photoData);
@@ -41,6 +43,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
         setTitleInputValue("");
         setDescInputValue("");
         setUrlInputValue("");
+        setFileInputValue("");
       })
       .catch((err) => {
         console.error("ERROR in client POST Route:", err);
@@ -52,6 +55,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
     setTitleInputValue("");
     setDescInputValue("");
     setUrlInputValue("");
+    setFileInputValue("");
   };
 
   return (
@@ -71,7 +75,9 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       )}
       {/* {showForm ? <h3>Current State TRUE</h3> : <h3>Current State FALSE</h3>} */}
       {showForm && (
-        <form onSubmit={formSubmitHandler}>
+        <form
+          onSubmit={formSubmitHandler}
+          encType="multipart/form-data">
           <h2>Add a Photo</h2>
           <div className="form-field">
             <div className="left">
@@ -83,6 +89,20 @@ export default function AddPhoto({ refreshGalleryCallback }) {
                 value={titleInputValue}
                 placeholder="Enter photo title here..."
                 required
+              />
+              <label htmlFor="fileInput">Upload File:</label>
+              <input
+                id="fileInput"
+                type="file"
+                name="photoFile"
+                onChange={(event) => {
+                  console.log("fileInputEle:", event.target.files[0].name);
+                  setUrlInputValue(event.target.value);
+                  setFileInputValue(event.target.value);
+                }}
+                value={fileInputValue}
+                // onChange={(event) => setUrlInputValue(event.target.value)}
+                // value={urlInputValue}
               />
               <label htmlFor="urlInput">Photo Location (URL only):</label>
               <input
