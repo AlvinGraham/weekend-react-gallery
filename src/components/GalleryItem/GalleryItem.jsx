@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./GalleryItem.css";
-import { putGalleryLike } from "../../galleryApi/gallery.api";
+import { putGalleryLike, deletePhoto } from "../../galleryApi/gallery.api";
 
 export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
   // initialize state variables
@@ -15,7 +15,7 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
       .catch((err) => {
         console.error("ERROR in client PUT Route:", err);
       });
-  };
+  }; // end likeBtnClkHandler
 
   const imageToggleHandler = () => {
     // useEffect(() => {
@@ -25,20 +25,38 @@ export default function GalleryItem({ galleryData, refreshGalleryCallback }) {
     setShowImage(!showImage);
 
     console.log("showImage:", newImageState);
-  };
+  }; // end imageToggleHandler()
+
+  const delBtnClkHandler = (id) => {
+    deletePhoto(id)
+      .then((response) => {
+        refreshGalleryCallback();
+      })
+      .catch((err) => {
+        console.error("ERROR in client DELETE Route:", err);
+      });
+  }; // end delBtnClkHandler()
 
   return (
     <div
       data-testid="galleryItem"
       className="gallery-card">
       <p>{galleryData.title}</p>
+      <button
+        className="delBtn"
+        onClick={(event) => {
+          event.preventDefault();
+          delBtnClkHandler(galleryData.id);
+        }}>
+        Delete
+      </button>
       <div
         onClick={imageToggleHandler}
         data-testid="toggle">
         {showImage ? (
           <img src={galleryData.url} />
         ) : (
-          <p>{galleryData.description}</p>
+          <p className="descPara">{galleryData.description}</p>
         )}
       </div>
       <button

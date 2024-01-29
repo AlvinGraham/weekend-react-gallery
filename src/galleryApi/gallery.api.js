@@ -11,3 +11,7 @@ export const putGalleryLike = (galleryItemID) => {
 export const postPhoto = (photoItem) => {
   return axios.post("/api/gallery", photoItem);
 };
+
+export const deletePhoto = (id) => {
+  return axios.delete(`/api/gallery/${id}`);
+};

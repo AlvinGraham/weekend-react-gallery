@@ -60,5 +60,23 @@ router.post("/", (req, res) => {
     });
 });
 
+// DELETE /gallery/:id
+router.delete("/:id", (req, res) => {
+  // create queryText and queryArgs
+  const queryText = `DELETE FROM "gallery" WHERE id = $1;`;
+  const queryArgs = [req.params.id];
+
+  //conduct query
+  pool
+    .query(queryText, queryArgs)
+    .then((result) => {
+      console.log(`Successful DELETE DB query - ID:${req.params.id}`);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error("ERROR in DELETE DB Query:", err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
-//https://cdn.cnn.com/cnn/interactive/2022/12/world/best-space-photos-2022/media/images/04-04-apr-PIA25015_orig.jpg
