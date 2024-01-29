@@ -1,5 +1,5 @@
 import "./AddPhoto.css";
-import { postPhoto } from "../../galleryApi/gallery.api";
+import { postPhoto, postPhotoFile } from "../../galleryApi/gallery.api";
 import { useState } from "react";
 
 export default function AddPhoto({ refreshGalleryCallback }) {
@@ -32,10 +32,26 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       title: titleInputValue,
       description: descInputValue,
       url: urlInputValue,
-      file: fileInputValue,
     };
 
-    //console.log("photoData:", photoData);
+    // upload photo
+    const fileInputEle = document.getElementById("fileInput");
+    if (fileInputValue) {
+      console.log("fileInputElement:", fileInputEle);
+      console.log("file:", fileInputEle.files[0]);
+
+      const form = new FormData();
+      form.append("photoFile", fileInputEle.files[0]);
+
+      postPhotoFile(form)
+        .then((result) => {
+          console.log("File sent to server for upload");
+        })
+        .catch((err) => {
+          console.error("ERROR uploading file:", err);
+        });
+    }
+
     // axios POST
     postPhoto(photoData)
       .then((response) => {
@@ -77,6 +93,8 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       {showForm && (
         <form
           onSubmit={formSubmitHandler}
+          action="/api/gallery/upload"
+          method="post"
           encType="multipart/form-data">
           <h2>Add a Photo</h2>
           <div className="form-field">
@@ -97,7 +115,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
                 name="photoFile"
                 onChange={(event) => {
                   console.log("fileInputEle:", event.target.files[0].name);
-                  setUrlInputValue(event.target.value);
+                  setUrlInputValue(`./images/${event.target.files[0].name}`);
                   setFileInputValue(event.target.value);
                 }}
                 value={fileInputValue}
@@ -107,7 +125,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
               <label htmlFor="urlInput">Photo Location (URL only):</label>
               <input
                 id="urlInput"
-                type="url"
+                type="text"
                 onChange={(event) => setUrlInputValue(event.target.value)}
                 value={urlInputValue}
                 placeholder="Enter Local or Web URL here..."

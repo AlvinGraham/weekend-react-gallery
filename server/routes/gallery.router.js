@@ -1,6 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../modules/pool");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+  destination: (req, file, cb) => {
+    cb(null, "./public/images/uploads");
+  },
+});
+const upload = multer({ storage: storage });
 
 // PUT /gallery/like/:id
 router.put("/like/:id", (req, res) => {
@@ -58,6 +68,13 @@ router.post("/", (req, res) => {
       console.error("ERROR in POST DB Query:", err);
       res.sendStatus(500);
     });
+});
+
+router.post("/upload", upload.single("photoFile"), (req, res) => {
+  //console.log("req obj", req);
+  console.log("Upload File Data:", req.file);
+  console.log("Upload req.body", req.body);
+  res.sendStatus(200);
 });
 
 // DELETE /gallery/:id
