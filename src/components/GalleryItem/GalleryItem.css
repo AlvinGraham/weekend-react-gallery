@@ -19,3 +19,11 @@
   width: 150px;
   height: 150px;
 }
+
+.descPara {
+  width: 150px;
+  height: 150px;
+  border: 1px solid grey;
+  padding: 5px;
+  font-size: 0.75em;
+}
