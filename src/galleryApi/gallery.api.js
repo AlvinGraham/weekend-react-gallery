@@ -15,3 +15,8 @@ export const postPhoto = (photoItem) => {
 export const deletePhoto = (id) => {
   return axios.delete(`/api/gallery/${id}`);
 };
+
+export const postPhotoFile = (photoFile) => {
+  console.log("In api photo upload - photoFile:", photoFile);
+  return axios.post(`/api/gallery/upload`, photoFile);
+};

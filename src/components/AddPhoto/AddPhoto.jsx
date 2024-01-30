@@ -1,5 +1,5 @@
 import "./AddPhoto.css";
-import { postPhoto } from "../../galleryApi/gallery.api";
+import { postPhoto, postPhotoFile } from "../../galleryApi/gallery.api";
 import { useState } from "react";
 
 export default function AddPhoto({ refreshGalleryCallback }) {
@@ -8,6 +8,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
   const [titleInputValue, setTitleInputValue] = useState("");
   const [descInputValue, setDescInputValue] = useState("");
   const [urlInputValue, setUrlInputValue] = useState("");
+  const [fileInputValue, setFileInputValue] = useState("");
 
   // component functions
   const changeStateBtnClkHandler = (event) => {
@@ -29,22 +30,53 @@ export default function AddPhoto({ refreshGalleryCallback }) {
     //assemble data payload
     const photoData = {
       title: titleInputValue,
-      description: descInputValue,
       url: urlInputValue,
+      description: descInputValue,
     };
 
-    //console.log("photoData:", photoData);
-    // axios POST
-    postPhoto(photoData)
-      .then((response) => {
-        refreshGalleryCallback();
-        setTitleInputValue("");
-        setDescInputValue("");
-        setUrlInputValue("");
-      })
-      .catch((err) => {
-        console.error("ERROR in client POST Route:", err);
-      });
+    // upload photo
+    const fileInputEle = document.getElementById("fileInput");
+    if (fileInputValue) {
+      console.log("fileInputElement:", fileInputEle);
+      console.log("file:", fileInputEle.files[0]);
+
+      const photoFormItem = new FormData();
+      photoFormItem.append("photoFile", fileInputEle.files[0]);
+
+      postPhotoFile(photoFormItem)
+        .then((result) => {
+          console.log("File sent to server for upload");
+          console.log("Results:", result);
+
+          postPhoto(photoData)
+            .then((response) => {
+              refreshGalleryCallback();
+              setTitleInputValue("");
+              setDescInputValue("");
+              setUrlInputValue("");
+              setFileInputValue("");
+            })
+            .catch((err) => {
+              console.error("ERROR in client POST Route:", err);
+            });
+        })
+        .catch((err) => {
+          console.error("ERROR uploading file:", err);
+        });
+    } else {
+      // axios POST
+      postPhoto(photoData)
+        .then((response) => {
+          refreshGalleryCallback();
+          setTitleInputValue("");
+          setDescInputValue("");
+          setUrlInputValue("");
+          setFileInputValue("");
+        })
+        .catch((err) => {
+          console.error("ERROR in client POST Route:", err);
+        });
+    }
   }; // end formSubmitHandler()
 
   const resetBtnClkHandler = (event) => {
@@ -52,6 +84,7 @@ export default function AddPhoto({ refreshGalleryCallback }) {
     setTitleInputValue("");
     setDescInputValue("");
     setUrlInputValue("");
+    setFileInputValue("");
   };
 
   return (
@@ -71,7 +104,11 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       )}
       {/* {showForm ? <h3>Current State TRUE</h3> : <h3>Current State FALSE</h3>} */}
       {showForm && (
-        <form onSubmit={formSubmitHandler}>
+        <form
+          onSubmit={formSubmitHandler}
+          action="/api/gallery/upload"
+          method="post"
+          encType="multipart/form-data">
           <h2>Add a Photo</h2>
           <div className="form-field">
             <div className="left">
@@ -84,10 +121,26 @@ export default function AddPhoto({ refreshGalleryCallback }) {
                 placeholder="Enter photo title here..."
                 required
               />
+              <label htmlFor="fileInput">Upload File:</label>
+              <input
+                id="fileInput"
+                type="file"
+                name="photoFile"
+                onChange={(event) => {
+                  console.log("fileInputEle:", event.target.files[0].name);
+                  setUrlInputValue(
+                    `./images/uploads/${event.target.files[0].name}`
+                  );
+                  setFileInputValue(event.target.value);
+                }}
+                value={fileInputValue}
+                // onChange={(event) => setUrlInputValue(event.target.value)}
+                // value={urlInputValue}
+              />
               <label htmlFor="urlInput">Photo Location (URL only):</label>
               <input
                 id="urlInput"
-                type="url"
+                type="text"
                 onChange={(event) => setUrlInputValue(event.target.value)}
                 value={urlInputValue}
                 placeholder="Enter Local or Web URL here..."
