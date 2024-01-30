@@ -11,6 +11,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+const fs = require("fs");
 
 // PUT /gallery/like/:id
 router.put("/like/:id", (req, res) => {
@@ -53,6 +54,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   // Create queryText and queryArgs
   console.log(req.body);
+
   const queryText = `INSERT INTO "gallery" (url, title, description)
     VALUES ($1, $2, $3);`;
   const queryArgs = [req.body.url, req.body.title, req.body.description];
@@ -72,9 +74,39 @@ router.post("/", (req, res) => {
 
 router.post("/upload", upload.single("photoFile"), (req, res) => {
   //console.log("req obj", req);
+
   console.log("Upload File Data:", req.file);
   console.log("Upload req.body", req.body);
-  res.sendStatus(200);
+
+  // delay unitl file is found
+
+  async function checkFileExist(path, timeout = 2000) {
+    let totalTime = 0;
+    let checkTime = timeout / 10;
+
+    return await new Promise((resolve, reject) => {
+      const timer = setInterval(function () {
+        totalTime += checkTime;
+
+        let fileExists = fs.existsSync(path);
+
+        if (fileExists || totalTime >= timeout) {
+          clearInterval(timer);
+
+          resolve(fileExists);
+        }
+      }, checkTime);
+    });
+  }
+
+  checkFileExist(req.file.path)
+    .then((resolve) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error("File Not found:", err);
+      res.sendStatus(500);
+    });
 });
 
 // DELETE /gallery/:id

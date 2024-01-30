@@ -30,8 +30,8 @@ export default function AddPhoto({ refreshGalleryCallback }) {
     //assemble data payload
     const photoData = {
       title: titleInputValue,
-      description: descInputValue,
       url: urlInputValue,
+      description: descInputValue,
     };
 
     // upload photo
@@ -40,30 +40,43 @@ export default function AddPhoto({ refreshGalleryCallback }) {
       console.log("fileInputElement:", fileInputEle);
       console.log("file:", fileInputEle.files[0]);
 
-      const form = new FormData();
-      form.append("photoFile", fileInputEle.files[0]);
+      const photoFormItem = new FormData();
+      photoFormItem.append("photoFile", fileInputEle.files[0]);
 
-      postPhotoFile(form)
+      postPhotoFile(photoFormItem)
         .then((result) => {
           console.log("File sent to server for upload");
+          console.log("Results:", result);
+
+          postPhoto(photoData)
+            .then((response) => {
+              refreshGalleryCallback();
+              setTitleInputValue("");
+              setDescInputValue("");
+              setUrlInputValue("");
+              setFileInputValue("");
+            })
+            .catch((err) => {
+              console.error("ERROR in client POST Route:", err);
+            });
         })
         .catch((err) => {
           console.error("ERROR uploading file:", err);
         });
+    } else {
+      // axios POST
+      postPhoto(photoData)
+        .then((response) => {
+          refreshGalleryCallback();
+          setTitleInputValue("");
+          setDescInputValue("");
+          setUrlInputValue("");
+          setFileInputValue("");
+        })
+        .catch((err) => {
+          console.error("ERROR in client POST Route:", err);
+        });
     }
-
-    // axios POST
-    postPhoto(photoData)
-      .then((response) => {
-        refreshGalleryCallback();
-        setTitleInputValue("");
-        setDescInputValue("");
-        setUrlInputValue("");
-        setFileInputValue("");
-      })
-      .catch((err) => {
-        console.error("ERROR in client POST Route:", err);
-      });
   }; // end formSubmitHandler()
 
   const resetBtnClkHandler = (event) => {
@@ -115,7 +128,9 @@ export default function AddPhoto({ refreshGalleryCallback }) {
                 name="photoFile"
                 onChange={(event) => {
                   console.log("fileInputEle:", event.target.files[0].name);
-                  setUrlInputValue(`./images/${event.target.files[0].name}`);
+                  setUrlInputValue(
+                    `./images/uploads/${event.target.files[0].name}`
+                  );
                   setFileInputValue(event.target.value);
                 }}
                 value={fileInputValue}
